@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+
+  leader:
+    image: python:slim
+    volumes:
+      - ./:/dlock
+    working_dir: /dlock
+    command: [ "python","leader.py","0.0.0.0","8001","0.0.0.0","8000" ]
+
+  follower_1:
+    image: python:slim
+    volumes:
+      - ./:/dlock
+    working_dir: /dlock
+    command: [ "python","follower.py","0.0.0.0","8002","leader","8000" ]
+    depends_on:
+      - leader
+
+  follower_2:
+    image: python:slim
+    volumes:
+      - ./:/dlock
+    working_dir: /dlock
+    command: [ "python","follower.py","0.0.0.0","8003","leader","8000" ]
+    depends_on:
+      - leader
+
+  client_1:
+    image: python:slim
+    volumes:
+      - ./:/dlock
+    working_dir: /dlock
+    command: [ "python","client.py","leader","8001"]
+    depends_on:
+      - leader
+
+  client_2:
+    image: python:slim
+    volumes:
+      - ./:/dlock
+    working_dir: /dlock
+    command: [ "python","client.py","follower_2","8002" ]
+    depends_on:
+      - follower_2
+
+  client_3:
+    image: python:slim
+    volumes:
+      - ./:/dlock
+    working_dir: /dlock
+    command: [ "python","client.py","follower_3","8003" ]
+    depends_on:
+      - follower_2
