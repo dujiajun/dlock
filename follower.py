@@ -18,6 +18,7 @@ class Follower(Server):
         thread.start()
 
     def handle_client_message(self, conn: socket.socket, client_msg: dict, client_id: str):
+        print(f"Receiving client {client_id}' request: {client_msg}")
         lock_key = client_msg['value']
         action = client_msg['action']
         if action == ClientActionType.LOCK.value or action == ClientActionType.UNLOCK.value:
@@ -56,10 +57,11 @@ class Follower(Server):
                 self.handle_leader_message(msg)
 
     def handle_leader_message(self, leader_msg: dict):
-        # print('handle_leader_message', leader_msg)
+        print(f"Receiving leader's request: {leader_msg['action']}", )
         if leader_msg['action'] == LeaderActionType.BROADCAST.value:
             self.map_lock.acquire()
             self.lock_map = leader_msg['value']
+            print('Map:', self.lock_map)
             self.map_lock.release()
         elif leader_msg['action'] == LeaderActionType.RESPONSE.value:
             value = leader_msg['value']

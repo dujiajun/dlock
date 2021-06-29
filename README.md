@@ -3,12 +3,14 @@
 # Get started
 
 ```shell
+# for quorum
 python leader.py localhost 8001 localhost 8000 
 python follower.py localhost 8002 localhost 8000 
-python follower.py localhost 8003 localhost 8000 
+python follower.py localhost 8003 localhost 8000
+```
+```shell
+# for clients
 python client.py localhost 8001
-python client.py localhost 8002
-python client.py localhost 8003
 ```
 
 # Decription

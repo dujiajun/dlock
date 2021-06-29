@@ -38,6 +38,7 @@ class Leader(Server):
         return result
 
     def handle_client_message(self, conn: socket.socket, client_msg: dict, client_id: str) -> None:
+        print(f"Receiving client {client_id}' request: {client_msg}")
         action = client_msg['action']
         if action == ClientActionType.QUERY.value:
             lock_key = client_msg['value']
@@ -90,12 +91,14 @@ class Leader(Server):
     def handle_follower_message(self, conn: socket.socket, follower_msg: dict) -> None:
         client_id = follower_msg['client_id']
         client_msg = follower_msg['client_msg']
+        print(f"Receiving follower's request: {client_id} {client_msg}")
         result = self.operate_lock_map(client_msg, client_id)
         op_msg = {'client_id': client_id, 'action': client_msg['action'], 'value': result}
         leader_msg = create_leader_message(LeaderActionType.RESPONSE, op_msg)
         send(conn, leader_msg)
 
     def broadcast_to_followers(self) -> None:
+        print('Broadcasting to all followers')
         self.map_lock.acquire()
         msg = create_leader_message(LeaderActionType.BROADCAST, self.lock_map)
         self.map_lock.release()
