@@ -1,4 +1,4 @@
-# Project 2: Distributed Lock Design
+# Distributed Lock Design
 
 # Get started
 
@@ -59,14 +59,3 @@ python client.py localhost 8001
     - Define the IP address of the target server
 
     - Generate the Client ID information based on the user information(UUID)
-
-- **References**
-
-- **Data structure of a client in the consensus system**
-
-**![project2_pic2.png](https://oc.sjtu.edu.cn/courses/28581/files/2256100/preview?verifier=ruBau2iuQN4862tdAUgBTnPxVs11MpuzTU7yzGQE)**
-
-- **Report and Source Code are required**
-- **Source Code should be checked by TA**
-- **Deadline**: June 30th
-
